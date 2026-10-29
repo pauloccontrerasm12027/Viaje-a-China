@@ -1,44 +1,51 @@
 import streamlit as st
 import docx
+import os
 
 st.set_page_config(page_title="Mapa Interactivo de China", layout="wide")
 
-# Título y subtítulo principal
 st.title("Mapa Interactivo de China")
 st.write("Guía para explorar tu viaje en China.")
 
-# Pestañas superiores
+# Pestañas principales
 tab1, tab2 = st.tabs(["📖 Documentos Word", "🗺️ Mapa Interactivo de China"])
 
 with tab1:
-    st.header("Visor de Documentos Word (.docx)")
+    st.header("Itinerario de Viaje a China")
     
-    # Campo para cargar el archivo
-    archivo_subido = st.file_uploader("Sube tu archivo Word (.docx)", type=["docx"])
+    # Nombre del archivo que tienes subido en tu repositorio
+    nombre_archivo = "Itinerario_Viaje_China_15_Dias_Visa (2).docx"
     
-    if archivo_subido is not None:
-        st.success(f"Archivo '{archivo_subido.name}' cargado con éxito.")
-        st.divider()
-        
-        # Leer y mostrar el contenido del documento
-        doc = docx.Document(archivo_subido)
+    if os.path.exists(nombre_archivo):
+        doc = docx.Document(nombre_archivo)
         for parrafo in doc.paragraphs:
             texto = parrafo.text.strip()
             if texto:
+                # Estilo para títulos de sección o encabezados
                 if parrafo.style.name.startswith("Heading") or (len(texto) > 0 and texto[0].isdigit() and "." in texto[:3]):
                     st.subheader(texto)
                 else:
                     st.write(texto)
+                    
+        st.divider()
+        # Botón para que los visitantes puedan descargar una copia si lo desean
+        with open(nombre_archivo, "rb") as f:
+            st.download_button(
+                label="📥 Descargar archivo Word",
+                data=f,
+                file_name="Itinerario_Viaje_China.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
     else:
-        st.info("Sube tu archivo .docx para visualizar su contenido aquí.")
+        st.warning(f"No se encontró el archivo '{nombre_archivo}' en el repositorio.")
 
 with tab2:
     st.header("Mapa Interactivo de China")
-    st.write("Ubicaciones principales del recorrido:")
+    st.write("Ubicaciones principales del itinerario:")
     
-    # Coordenadas aproximadas de ejemplo (Pekín, Xi'an, Shanghái)
-    coordenadas = {
+    # Coordenadas de ejemplo (Pekín, Xi'an, Shanghái)
+    ciudades = {
         "latitude": [39.9042, 34.3416, 31.2304],
         "longitude": [116.4074, 108.9398, 121.4737]
     }
-    st.map(coordenadas)
+    st.map(ciudades)
