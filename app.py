@@ -4,6 +4,27 @@ import os
 
 st.set_page_config(page_title="Mapa Interactivo de China", layout="wide")
 
+st.markdown("""
+<style>
+    /* Color de fondo suave para toda la página */
+    .stApp {
+        background-color: #fdfbf7;
+        color: #2c3e50;
+    }
+
+    /* Color rojo para el título principal */
+    h1 {
+        color: #c0392b !important;
+    }
+
+    /* Color para los subtítulos */
+    h2, h3 {
+        color: #8e44ad !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
 st.title("Mapa Interactivo de China")
 st.write("Guía para explorar tu viaje en China.")
 
